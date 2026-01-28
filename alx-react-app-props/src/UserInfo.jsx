@@ -1,3 +1,4 @@
+// UserInfo.jsx
 import UserProfile from './UserProfile';
 
 function UserInfo() {
