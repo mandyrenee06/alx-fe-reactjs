@@ -1,5 +1,4 @@
-// UserProfile.jsx
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import UserContext from './UserContext';
 
 function UserProfile() {
@@ -14,3 +13,4 @@ function UserProfile() {
 }
 
 export default UserProfile;
+
