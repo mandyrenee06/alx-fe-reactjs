@@ -2,32 +2,16 @@ import { useState } from 'react';
 import { useRecipeStore } from '../store/recipeStore';
 
 const AddRecipeForm = () => {
-  const addRecipe = useRecipeStore((state) => state.addRecipe);
+  const addRecipe = useRecipeStore(state => state.addRecipe);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  
-  if (!title.trim() || !description.trim()) {
-    alert('Please fill in at least title and description');
-    return;
-  }
-
-  const newRecipe = {
-    title: title.trim(),
-    description: description.trim(),
-    ingredients: ingredients.filter(ing => ing.trim() !== ''),
-    instructions: instructions.trim(),
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addRecipe({ id: Date.now(), title, description });
+    setTitle('');
+    setDescription('');
   };
-
-  addRecipe(newRecipe);
-  
-  setTitle('');
-  setDescription('');
-  setIngredients(['']); 
-  setInstructions('');
-};
 
   return (
     <form onSubmit={handleSubmit}>
