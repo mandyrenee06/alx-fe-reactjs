@@ -10,7 +10,7 @@ const EditRecipeForm = ({ recipe }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateRecipe({ id, title, description })
+    updateRecipe({ id: recipe.id, title, description })
     
   };
 
