@@ -1,16 +1,47 @@
-import { useNavigate } from 'react-router-dom'
-import useRecipeStore from '../recipeStore'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useRecipeStore from '../recipeStore';
 
-const DeleteRecipeButton = ({ id }) => {
-  const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
+const DeleteRecipeButton = ({ recipeId }) => {
   const navigate = useNavigate();
+  const deleteRecipe = useRecipeStore((state) => state.deleteRecipe);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const handleDelete = () => {
-    deleteRecipe(id);
+    deleteRecipe(recipeId);
     navigate('/');
+  };
+
+  if (!showConfirm) {
+    return (
+      <button
+        className="delete-btn"
+        onClick={() => setShowConfirm(true)}
+      >
+        🗑️ Delete Recipe
+      </button>
+    );
   }
 
-  return <button onClick={handleDelete}>Delete</button>;
-}
+  return (
+    <div className="delete-confirmation">
+      <p>Are you sure you want to delete this recipe?</p>
+      <div className="confirmation-buttons">
+        <button
+          className="confirm-delete-btn"
+          onClick={handleDelete}
+        >
+          Yes, Delete
+        </button>
+        <button
+          className="cancel-delete-btn"
+          onClick={() => setShowConfirm(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+};
 
-export default DeleteRecipeButton
+export default DeleteRecipeButton;
