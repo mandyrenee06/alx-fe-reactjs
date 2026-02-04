@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import UserContext from "../UserContext";
 
-function UserProfile() {
+function UserDetails() {
   const user = React.useContext(UserContext);
 
   return (
@@ -12,4 +12,4 @@ function UserProfile() {
   );
 }
 
-export default UserProfile;
+export default UserDetails;
