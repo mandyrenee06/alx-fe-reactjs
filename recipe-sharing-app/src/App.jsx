@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import RecipeList from './components/RecipeList';
 import AddRecipeForm from './components/AddRecipeForm';
-import RecipeDetail from './components/RecipeDetail';
+import RecipeDetails from './components/RecipeDetails';
 
 const App = () => {
   return (
@@ -21,7 +21,7 @@ const App = () => {
             }
           />
 
-          <Route path="/recipes/:id" element={<RecipeDetail />} />
+          <Route path="/recipes/:id" element={<RecipeDetails />} />
         </Routes>
       </div>
     </BrowserRouter>

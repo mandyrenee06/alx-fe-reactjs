@@ -24,4 +24,4 @@ const RecipeDetails = () => {
   );
 };
 
-export default RecipeDetail;
+export default RecipeDetails;
