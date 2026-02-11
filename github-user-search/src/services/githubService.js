@@ -9,6 +9,11 @@ const githubApi = axios.create({
   },
 });
 
+export const fetchUserData = async (username) => {
+  const response = await githubApi.get(`/users/${username}`);
+  return response.data;
+};
+
 export const searchUsers = async ({ username, location, minRepos, page = 1 }) => {
   let query = username;
 
