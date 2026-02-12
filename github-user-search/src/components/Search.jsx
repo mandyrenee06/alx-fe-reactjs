@@ -1,117 +1,128 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { fetchAdvancedUsers } from "../services/githubService";
 
-function Search() {
+const Search = () => {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [minRepos, setMinRepos] = useState("");
   const [users, setUsers] = useState([]);
+  const [error, setError] = useState(false);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setPage(1);
-
+  const handleSearch = async () => {
     try {
-      const data = await fetchUserData({ username, location, minRepos, page: 1 });
-      setUsers(data.items || []);
+      const data = await fetchAdvancedUsers(
+        username,
+        location,
+        minRepos,
+        1
+      );
+      setUsers(data.items);
+      setPage(1);
+      setError(false);
     } catch (err) {
       setUsers([]);
-    } finally {
-      setLoading(false);
+      setError(true);
     }
   };
 
   const loadMore = async () => {
     const nextPage = page + 1;
-    setLoading(true);
-
-    try {
-      const data = await searchUsers({ username, location, minRepos, page: nextPage });
-      setUsers([...users, ...(data.items || [])]);
-      setPage(nextPage);
-    } finally {
-      setLoading(false);
-    }
+    const data = await fetchAdvancedUsers(
+      username,
+      location,
+      minRepos,
+      nextPage
+    );
+    setUsers([...users, ...data.items]);
+    setPage(nextPage);
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
-      {/* Advanced Search Form */}
-      <form
-        onSubmit={handleSearch}
-        className="bg-white p-6 rounded shadow mb-6 space-y-4"
-      >
-        <input
-          type="text"
-          placeholder="GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="text"
-          placeholder="Location (optional)"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
-        <input
-          type="number"
-          placeholder="Minimum repositories"
-          value={minRepos}
-          onChange={(e) => setMinRepos(e.target.value)}
-          className="w-full border p-2 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-        >
-          Search
-        </button>
-      </form>
-      {error && <p>Looks like we cant find the user</p>}
+    <div className="min-h-screen bg-gray-100 p-6">
+      <div className="max-w-xl mx-auto bg-white shadow-lg rounded-xl p-6">
+        <h1 className="text-2xl font-bold mb-4 text-center">
+          Advanced GitHub User Search
+        </h1>
 
-      {/* Results */}
-      {loading && <p className="text-center">Loading...</p>}
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Username"
+            className="w-full p-2 border rounded"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {users.map((user) => (
-          <div key={user.id} className="border p-4 rounded flex items-center gap-4">
-            <img
-              src={user.avatar_url}
-              alt={user.login}
-              className="w-16 h-16 rounded-full"
-            />
-            <div>
-              <h3 className="font-bold">{user.login}</h3>
-              <a
-                href={user.html_url}
-                target="_blank"
-                rel="noreferrer"
-                className="text-blue-500 underline"
-              >
-                View Profile
-              </a>
+          <input
+            type="text"
+            placeholder="Location"
+            className="w-full p-2 border rounded"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+
+          <input
+            type="number"
+            placeholder="Minimum Repositories"
+            className="w-full p-2 border rounded"
+            value={minRepos}
+            onChange={(e) => setMinRepos(e.target.value)}
+          />
+
+          <button
+            onClick={handleSearch}
+            className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+          >
+            Search
+          </button>
+        </div>
+
+        {error && (
+          <p className="text-red-500 mt-4">
+            Looks like we cant find the user
+          </p>
+        )}
+
+        <div className="mt-6 space-y-4">
+          {users.map((user) => (
+            <div
+              key={user.id}
+              className="p-4 border rounded flex items-center justify-between"
+            >
+              <div className="flex items-center space-x-4">
+                <img
+                  src={user.avatar_url}
+                  alt={user.login}
+                  className="w-12 h-12 rounded-full"
+                />
+                <div>
+                  <h2 className="font-semibold">{user.login}</h2>
+                  <a
+                    href={user.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 text-sm"
+                  >
+                    View Profile
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* Load More */}
-      {users.length > 0 && !loading && (
-        <button
-          onClick={loadMore}
-          className="block mx-auto mt-6 bg-gray-800 text-white px-4 py-2 rounded"
-        >
-          Load More
-        </button>
-      )}
+        {users.length > 0 && (
+          <button
+            onClick={loadMore}
+            className="mt-4 w-full bg-gray-800 text-white p-2 rounded hover:bg-gray-900"
+          >
+            Load More
+          </button>
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default Search;
