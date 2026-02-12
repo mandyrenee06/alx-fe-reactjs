@@ -1,6 +1,6 @@
 const BASE_URL = "https://api.github.com/search/users?q";
 
-export const fetchAdvancedUsers = async (
+export const fetchUserData = async (
   username,
   location,
   minRepos,
