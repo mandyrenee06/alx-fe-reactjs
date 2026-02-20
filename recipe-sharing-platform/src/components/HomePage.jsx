@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import recipesData from "../data.json";
 
@@ -45,5 +46,12 @@ function HomePage() {
     </div>
   );
 }
+<Link
+  to={`/recipe/${recipe.id}`}
+  className="mt-4 inline-block text-blue-500 hover:underline"
+>
+  View Recipe →
+</Link>
 
 export default HomePage;
+
