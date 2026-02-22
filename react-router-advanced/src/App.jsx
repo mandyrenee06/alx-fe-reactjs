@@ -31,7 +31,7 @@ function App() {
           />
 
           {/* Dynamic Route */}
-          <Route path="/post/:id" element={<BlogPost />} />
+          <Route path="/blog/:id" element={<BlogPost />} />
         </Routes>
       </div>
     </BrowserRouter>
