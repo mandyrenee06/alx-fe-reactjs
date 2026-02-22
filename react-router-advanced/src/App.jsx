@@ -12,7 +12,7 @@ function App() {
         <nav>
           <Link to="/">Home</Link> |{" "}
           <Link to="/profile">Profile</Link> |{" "}
-          <Link to="/post/1">Blog Post</Link> |{" "}
+          <Link to="/blog/1">Blog Post</Link> |{" "}
           <Link to="/login">Login</Link>
         </nav>
 
